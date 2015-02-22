@@ -233,3 +233,42 @@ ben_map(zoom = 0.3,
 dev.off()
 
 
+#####
+# ZIP CODE CENTROIDS
+#####
+
+# Plot our shapefile
+plot(z, col = "grey", border = NA)
+
+# Add the centroid points
+points(coordinates(z))
+
+
+# Make size and color vectors
+# which are functions of retention
+
+# Color will be a spectrum of 100 colors: red = bad retention, blue = high retention
+color_vector <- adjustcolor(colorRampPalette(c("red", "yellow", "blue"))(ceiling(max(z$retention))), alpha.f = 0.5)
+colors <- color_vector[ceiling(z$retention)]
+
+# Size will be spectrum of 100 sizes = big = low retention, small = high retention
+size_vector <- (ceiling(max(z$retention)):1)/40
+sizes <- size_vector[ceiling(z$retention)]
+
+# Replot our shapefile
+plot(z, col = "grey", border = NA)
+
+# Add points, using our sizes and colors
+points(coordinates(z),
+       cex = sizes,
+       col = colors,
+       pch = 16)
+
+# Add legend
+legend_seq <- c(10, 25, 50, 75, 90)
+legend("topright",
+       pt.cex = legend_seq/40,
+       legend = legend_seq,
+       title = "Retention rate",
+       col = color_vector[legend_seq],
+       pch = 16)
