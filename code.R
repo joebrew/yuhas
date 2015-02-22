@@ -272,3 +272,9 @@ legend("topright",
        title = "Retention rate",
        col = color_vector[legend_seq],
        pch = 16)
+
+
+####
+# GET POINTS OF NEW SCHOOLS
+####
+schoolnames <- c("")
