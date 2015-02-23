@@ -274,7 +274,36 @@ legend("topright",
        pch = 16)
 
 
+
 ####
 # GET POINTS OF NEW SCHOOLS
 ####
-schoolnames <- c("")
+# this is the normal map from before,  works perfectly
+ben_map(zoom = 0.08,
+        x_adjust = -0.5,
+        y_adjust = -1.4)
+
+
+#* here I read in a new file with zip and a location flag
+
+charter_zip <- read.csv("Charter Campus Addresses.csv")
+
+# REMOVE NA ROW(S)
+charter_zip <- charter_zip[which(!is.na(charter_zip$Zip)),]
+charter_zip <- charter_zip[which((charter_zip$Location>0)),]
+
+# here I am on rocky ground, as I am trying to reuse the approach you used to map retention to z
+
+z$location <- vector(length=nrow(z), mode="numeric")
+for (i in unique(z$zip)){
+  z$location[which(z$zip == i)] <-
+    sum(charter_zip$Location[which(charter_zip$Zip == i)])
+}
+
+
+#* when I plot this, it looks good EXCEPT I seem to be putting a dot every place a zip code exists in z, not just the subset of those with charter_zip$Location > 0
+
+points(coordinates(z),
+       cex = .5,
+       col = "red",
+       pch = 16)
